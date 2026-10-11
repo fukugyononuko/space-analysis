@@ -140,7 +140,7 @@ def nearest(stars: pd.DataFrame, theme: Theme, count: int = 12):
     """O-03 太陽に近い恒星（ケンタウルス座α星系の 3 つを強調）"""
     fig, ax = _frame(theme, "太陽に近い星たち", ATTRIBUTION_STARS)
     ax.set_title("太陽に近い星たち", loc="left", color=theme.ink, fontsize=15, fontweight="bold", pad=34)  # 凡例の上に置く
-    near = stars.sort_values("dist").head(count)
+    near = stars.sort_values(["dist", "id"], kind="mergesort").head(count)  # 距離が同じ星（α星 A・B）も毎回同じ順に
     names = [STAR_NAMES_JA.get(r["proper"] if isinstance(r["proper"], str) else r["gl"], r["gl"]) for _, r in near.iterrows()]
     colors = [theme.series[1] if r["proper"] in ALPHA_CEN else theme.series[0] for _, r in near.iterrows()]
     values = (near["dist"] * PC_TO_LY).to_numpy()

@@ -48,7 +48,7 @@ def proxima_planets(planets: pd.DataFrame) -> pd.DataFrame:
 
 
 def nearest_stars(stars: pd.DataFrame, count: int = 12) -> pd.DataFrame:
-    near = stars.sort_values("dist").head(count)
+    near = stars.sort_values(["dist", "id"], kind="mergesort").head(count)  # 距離が同じ星（α星 A・B）も毎回同じ順に
     return pd.DataFrame(
         {
             "name": [STAR_NAMES_JA.get(r["proper"] if isinstance(r["proper"], str) else r["gl"], r["gl"]) for _, r in near.iterrows()],
